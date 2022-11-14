@@ -1,5 +1,5 @@
 import nltk
-import heapq
+import re, heapq
 import math, random
 
 """
@@ -12,12 +12,14 @@ def freq_add_summarizer(passage: str, brevity: int = 75):
     nltk.download("stopwords")
     stopwords = nltk.corpus.stopwords.words("english")
 
-    token_words = nltk.word_tokenize(passage)
+    stripped_passage = re.sub('[^a-zA-Z0-9]', ' ', passage)
+    formatted_passage = re.sub(r'\s+', ' ', stripped_passage)
+
     token_sentences = nltk.sent_tokenize(passage)
+    token_words = nltk.word_tokenize(formatted_passage)
 
     length_factor = random.uniform(0.15, 0.25)
     summary_length = math.ceil(length_factor * len(token_sentences))
-    print(summary_length)
 
     # Find all word frequencies
     word_frequencies = {}
