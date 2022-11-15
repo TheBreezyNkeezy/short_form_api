@@ -2,6 +2,7 @@ import os
 import argparse
 
 from freq_add import freq_add_summarizer
+from tf_idf import tf_idf_summarizer
 
 parser = argparse.ArgumentParser()
 parser.add_argument(
@@ -31,8 +32,10 @@ def main():
     result = ""
     if args.summ == "freq":
         result = freq_add_summarizer(text)
-    with open(f"{write_path}/{os.path.basename(args.text)}", 'w', encoding='utf-8') as f:
-            f.write(result)
+    if args.summ == "tf":
+        result = tf_idf_summarizer(text)
+    with open(f"{write_path}/{os.path.basename(args.text)}_{args.summ}", 'w', encoding='utf-8') as f:
+        f.write(result)
 
 if __name__ == "__main__":
     main()
