@@ -1,8 +1,5 @@
-import os
 import json
-import math
 import openai
-import pprint
 from dotenv import load_dotenv
 from flask import Flask, request, render_template
 
@@ -11,7 +8,6 @@ from freq_add import freq_add_summarizer
 from tf_idf import tf_idf_summarizer
 
 load_dotenv()
-OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
 MAX_TOKEN_COUNTS = 4096
 
 app = Flask(__name__)
@@ -90,4 +86,4 @@ def summarize():
     return json_values
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run()
