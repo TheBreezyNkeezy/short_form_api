@@ -10,6 +10,8 @@ from tf_idf import tf_idf_summarizer
 load_dotenv()
 MAX_TOKEN_COUNTS = 4096
 
+# Inspiration for the template website came from the following sources:
+# https://python.plainenglish.io/sentiment-analysis-flask-web-app-using-python-and-nltkintroduction-a45f893fb724
 app = Flask(__name__)
 
 @app.route("/", methods=["GET"])
