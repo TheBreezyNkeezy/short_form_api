@@ -1,13 +1,15 @@
+import re
+import math
 import nltk
-import re, heapq
-import math, random
+import heapq
+import random
 
 """
 Simple summarizer using aggregated sentence scores (TF-IDF algorithm)
 Sources:
 https://stackabuse.com/text-summarization-with-nltk-in-python/
 """
-def freq_add_summarizer(passage: str, brevity: int = 75):
+def freq_add_summarizer(passage: str, brevity: int = 50):
     nltk.download('punkt')
     nltk.download("stopwords")
     stopwords = nltk.corpus.stopwords.words("english")
@@ -18,7 +20,7 @@ def freq_add_summarizer(passage: str, brevity: int = 75):
     token_sentences = nltk.sent_tokenize(passage)
     token_words = nltk.word_tokenize(formatted_passage)
 
-    length_factor = random.uniform(0.15, 0.25)
+    length_factor = random.uniform(0.05, 0.15)
     summary_length = math.ceil(length_factor * len(token_sentences))
 
     # Find all word frequencies

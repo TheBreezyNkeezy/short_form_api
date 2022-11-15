@@ -1,4 +1,6 @@
-import nltk, math, pprint, re
+import re
+import nltk
+import math
 
 def find_frequencies(sentences, stopwords, st):
     freq_mat = {}
@@ -71,13 +73,13 @@ def generate_summary(sentences, scores, threshold):
         if sent in scores and scores[sent] >= threshold
     ]
 
-# """
-# Matrix summarizer using TF-IDF algorithm
-# Sources:
-# https://en.wikipedia.org/wiki/Tf%E2%80%93idf
-# https://towardsdatascience.com/text-summarization-using-tf-idf-e64a0644ace3
-# """
-def tf_idf_summarizer(passage: str, brevity: int = 35, quality: int = 1.15):
+"""
+Matrix summarizer using TF-IDF algorithm
+Sources:
+https://en.wikipedia.org/wiki/Tf%E2%80%93idf
+https://towardsdatascience.com/text-summarization-using-tf-idf-e64a0644ace3
+"""
+def tf_idf_summarizer(passage: str, quality: int = 1.25):
     nltk.download('punkt')
     nltk.download("stopwords")
     stemmer = nltk.PorterStemmer()
@@ -104,4 +106,5 @@ def tf_idf_summarizer(passage: str, brevity: int = 35, quality: int = 1.15):
     # Score sentences and generate summary from best sentences
     sentence_scores = calculate_scores(tf_idf_matrix)
     average_score = sum(sentence_scores.values()) / len(sentence_scores)
-    return " ".join(generate_summary(token_sentences, sentence_scores, quality * average_score))
+    summary_sentences = generate_summary(token_sentences, sentence_scores, quality * average_score)
+    return " ".join(summary_sentences)

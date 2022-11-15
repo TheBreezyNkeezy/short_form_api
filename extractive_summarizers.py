@@ -34,7 +34,7 @@ def main():
         result = freq_add_summarizer(text)
     if args.summ == "tf":
         result = tf_idf_summarizer(text)
-    with open(f"{write_path}/{os.path.basename(args.text)}", 'w', encoding='utf-8') as f:
+    with open(f"{write_path}/{os.path.basename(args.text)}_{args.summ}", 'w', encoding='utf-8') as f:
         f.write(result)
 
 if __name__ == "__main__":
