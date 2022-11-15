@@ -19,6 +19,7 @@ MAX_TOKEN_COUNTS = 4096
 # Inspiration for the template website came from the following sources:
 # https://python.plainenglish.io/sentiment-analysis-flask-web-app-using-python-and-nltkintroduction-a45f893fb724
 app = Flask(__name__)
+app.config['TEMPLATES_AUTO_RELOAD'] = True
 
 @app.route("/", methods=["GET"])
 def index():
@@ -49,10 +50,16 @@ def index_post():
         )
         values[f"openai_summ_group_{i}"] = [summ["text"] for summ in openai_summary["choices"]]
     openai_summaries = [value for key, value in values.items() if 'openai' in key.lower()]
-    idx_1, idx_2 = random.sample(range(0, len(openai_summaries)), 2)
+    lob_front_summ = ""
+    lob_back_summ = ""
     idx_3, idx_4 = random.sample(range(0, num_openai_summ), 2)
-    lob_front_summ = values[f"openai_summ_group_{idx_1}"][idx_3]
-    lob_back_summ = values[f"openai_summ_group_{idx_2}"][idx_4]
+    if len(openai_summaries) > 1:
+        idx_1, idx_2 = random.sample(range(0, len(openai_summaries)), 2)
+        lob_front_summ = values[f"openai_summ_group_{idx_1}"][idx_3]
+        lob_back_summ = values[f"openai_summ_group_{idx_2}"][idx_4]
+    else:
+        lob_front_summ = values[f"openai_summ_group_0"][idx_3]
+        lob_back_summ = values[f"openai_summ_group_0"][idx_4]
     lob_front_html = "<html style='padding: 1in; font-size: 15;'>{{lob_front_summ}}</html>"
     lob_back_html = "<html style='padding: 1in; font-size: 8;'>{{lob_back_summ}}</html>"
     postcard = lob.Postcard.create(
@@ -79,13 +86,15 @@ def index_post():
             "lob_back_summ": lob_back_summ
         }
     )
-    pprint.pprint(postcard)
+    postcard_link = postcard["url"]
+    print(postcard_link)
     return render_template(
         'index.html',
         passage = passage,
         freq_summary = freq_summary,
         tf_summary = tf_summary,
-        openai_summaries=openai_summaries
+        openai_summaries=openai_summaries,
+        postcard_link = postcard_link
     )
 
 @app.route("/test-parse", methods=["POST"])
@@ -123,10 +132,16 @@ def summarize():
         )
         values[f"openai_summ_group_{i}"] = [summ["text"] for summ in openai_summary["choices"]]
     openai_summaries = [value for key, value in values.items() if 'openai' in key.lower()]
-    idx_1, idx_2 = random.sample(range(0, len(openai_summaries)), 2)
+    lob_front_summ = ""
+    lob_back_summ = ""
     idx_3, idx_4 = random.sample(range(0, num_openai_summ), 2)
-    lob_front_summ = values[f"openai_summ_group_{idx_1}"][idx_3]
-    lob_back_summ = values[f"openai_summ_group_{idx_2}"][idx_4]
+    if len(openai_summaries) > 1:
+        idx_1, idx_2 = random.sample(range(0, len(openai_summaries)), 2)
+        lob_front_summ = values[f"openai_summ_group_{idx_1}"][idx_3]
+        lob_back_summ = values[f"openai_summ_group_{idx_2}"][idx_4]
+    else:
+        lob_front_summ = values[f"openai_summ_group_0"][idx_3]
+        lob_back_summ = values[f"openai_summ_group_0"][idx_4]
     lob_front_html = "<html style='padding: 1in; font-size: 15;'>{{lob_front_summ}}</html>"
     lob_back_html = "<html style='padding: 1in; font-size: 8;'>{{lob_back_summ}}</html>"
     postcard = lob.Postcard.create(
