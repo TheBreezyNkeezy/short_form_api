@@ -20,6 +20,10 @@
             color: black;
         }
 
+        a {
+            font-family: 'Helvetica Neue', sans-serif;
+        }
+
         p {
             color: #111;
             font-family: 'Helvetica Neue', sans-serif;
@@ -81,9 +85,9 @@
     <div class="container mt-5">
         <div class="centered">
             <div class="text-center text-white">
-                <title>AI text summarizers</title>
+                <title>AI text summarizers for postcards!</title>
             </div>
-            <h1 class="header">AI text summarizers</h1>
+            <h1 class="header">AI text summarizers for postcards!</h1>
             <p class="desc">
                 Type a sentence, click on the submit button and wait for your prediction.
             </p>
@@ -96,6 +100,14 @@
                 </div>
             </form>
             <br />
+            {% if postcard_link is defined %}
+            <h2 class="header">Postcard link:</h2>
+            <p class="desc">
+                <b>Here is a postcard generated from the summaries down below:</b>
+                <br />
+                <a href="{{ postcard_link }}">{{ postcard_link }}</a>
+            </p>
+            {% endif %}
             <br />
             {% if passage is defined %}
             <h2 class="header">Original passage:</h2>
